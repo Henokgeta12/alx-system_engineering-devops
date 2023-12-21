@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 # This script displays "Best School" 10 times using a while loop
+# The script print bad luck 4th loop iteration and good luck 8th loop iteration
 
 x=1
 while [[ $x -ne 9 ]]; do
