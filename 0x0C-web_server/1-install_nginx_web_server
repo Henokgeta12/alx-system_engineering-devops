@@ -1,16 +1,37 @@
 #!/usr/bin/env bash
+# Configures a new Ubuntu machine by installing
+# Nginx where it should be listening on port 80
+# Serve a page that would return a Hello World string
 
-# Update the package index
-apt-get update
+# colors
+blue='\e[1;34m'
+brown='\e[0;33m'
+green='\e[1;32m'
+reset='\033[0m'
 
-# Install Nginx
-apt-get install -y nginx
+echo -e "${blue}Updating and installing ${brown}Nginx${blue}.${reset}\n"
+sudo apt-get update -y -qq && \
+sudo apt-get install nginx -y
 
-# Configure Nginx to listen on port 80
-sed -i 's/listen 80;/listen 80 default_server;/g' /etc/nginx/sites-available/default
+echo -e "\n${blue}Setting up some minor stuff.${reset}\n"
 
-# Restart Nginx
-service nginx restart
+# Starting Nginx service
+sudo systemctl start nginx
 
-# Create a sample HTML file with "Hello World!" content
-echo "Hello World!" > /var/www/html/index.html
+# Allowing Nginx on firewall
+sudo ufw allow 'Nginx HTTP'
+
+# Giving the user ownership to website files for easy editing
+sudo chown -R "$USER":"$USER" /var/www/html
+sudo chmod -R 755 /var/www
+
+# Backup default index
+sudo cp /var/www/html/index.nginx-debian.html /var/www/html/index.nginx-debian.html.bckp
+
+# Creating new index
+echo -e "Hello World!" | sudo dd status=none of=/var/www/html/index.nginx-debian.html
+
+# Restarting Nginx
+sudo systemctl restart nginx
+
+echo -e "\n${green}Completed.${reset} ✅\n"
