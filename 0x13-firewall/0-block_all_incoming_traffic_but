@@ -1,7 +1,7 @@
+#!/usr/bin/env bash
+#configure ufw firewall
 sudo apt-get update
 sudo apt-get install ufw -y
-sudo ufw default deny incoming
-sudo ufw default allow outgoing
 sudo ufw disable -y
 sudo ufw allow 22/tcp
 sudo ufw allow 443/tcp
